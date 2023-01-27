@@ -1,0 +1,60 @@
+repos:
+  - repo: https://github.com/drupal/coder
+    rev: 8.3.9
+    hooks:
+      - id: drupal-coder
+        stages: [ commit ]
+        types: [ file ]
+        args:
+          - --standard=Drupal
+          - --extensions=php,module,inc,install,test,info,theme
+        exclude: '^web/themes/custom/fbcmicrosite_barrio/(build/|dist/|libraries/|node_modules/)|web/core|web/modules/contrib|web/modules/miniorange_oauth_client'
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+      - id: check-added-large-files
+        stages: [ commit ]
+      - id: check-merge-conflict
+        stages: [ commit ]
+      - id: check-yaml
+        stages: [ commit ]
+      - id: end-of-file-fixer
+        exclude: '^config/'
+        stages: [ commit ]
+      - id: no-commit-to-branch
+        args: [ --branch, master, --branch, develop ]
+        stages: [ commit ]
+      - id: trailing-whitespace
+        stages: [ commit ]
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v8.3.0
+    hooks:
+      - id: eslint
+        args: [ --ext, '.js', --ext, '.cjs', '--fix' ]
+        additional_dependencies:
+          - eslint-config-airbnb-base@15.0.0
+          - eslint-plugin-import@2.25.3
+          - eslint@8.3.0
+        stages: [ commit ]
+        exclude: '^web/themes/custom/fbcmicrosite_barrio/(build/|dist/|libraries/|node_modules/)|web/core|web/modules/contrib|web/modules/miniorange_oauth_client'
+        types: [ file ]
+        files: \.(js|jsx)$
+  - repo: https://github.com/awebdeveloper/pre-commit-stylelint
+    rev: 0.0.2
+    hooks:
+      - id: stylelint
+        args: [ --fix ]
+        additional_dependencies:
+          - stylelint-config-standard@24.0.0
+          - stylelint-config-standard-scss@3.0.0
+          - stylelint-scss@4.0.0
+          - stylelint@14.1.0
+        stages: [ commit ]
+        exclude: '^web/themes/custom/fbcmicrosite_barrio/(build/|dist/|libraries/|node_modules/)|web/modules/miniorange_oauth_client'
+        types: [ file ]
+        files: \.(css|scss|sass)$
+  - repo: https://github.com/jorisroovers/gitlint
+    rev: v0.16.0
+    hooks:
+      - id: gitlint
+        stages: [ commit-msg ]
